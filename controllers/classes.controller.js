@@ -2,6 +2,7 @@ var ClasesService = require("../services/clases.service");
 
 // Esto va a crear una clase en la BD sin ningun usuario, ¿No tendriamos que matchear el usuario primero?
 exports.createClass = async function (req, res) {
+
   const {
     categoria,
     tipoClase,
@@ -17,7 +18,6 @@ exports.createClass = async function (req, res) {
     categoria,
     tipoClase,
     frecuencia,
-    //calificacion
     metodologia,
     costo,
     duracion,
@@ -27,7 +27,7 @@ exports.createClass = async function (req, res) {
   };
 
   try {
-    const createdClase = await ClasesService.createClase(clase);
+    const createdClase = await ClasesService.createClase(user, clase);
     return res
       .status(201)
       .json({ createdClase, message: "Succesfully created class" });
@@ -38,3 +38,8 @@ exports.createClass = async function (req, res) {
       .json({ status: 400, message: "Class creation was unsuccesfull" });
   }
 };
+
+
+exports.deleteClass = async function (req, res) {
+
+}

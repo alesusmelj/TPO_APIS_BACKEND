@@ -1,6 +1,6 @@
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
-var authorization = function (req, res, next) {
+const authorization = function (req, res, next) {
 
     var token = req.headers['x-access-token'];
     console.log("token", token);
