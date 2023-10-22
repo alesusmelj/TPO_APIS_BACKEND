@@ -1,7 +1,5 @@
 const ClassService = require("../services/class.service");
 const UserService = require("../services/user.service");
-const User = require("../models/User.model");
-const jwt = require("jsonwebtoken");
 
 exports.createClass = async function (req, res) {
   const token = req.headers["x-access-token"];
@@ -10,21 +8,6 @@ exports.createClass = async function (req, res) {
     return res
       .status(401)
       .json({ status: 401, message: "Token no proporcionado" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-
-    const userId = decoded.id;
-    const userBd = await User.findOne({ _id: userId });
-
-    if (!userBd) {
-      return res
-        .status(404)
-        .json({ status: 404, message: "Usuario no encontrado" });
-    }
-  } catch (e) {
-    return res.json({ message: "Error al buscar usuario" });
   }
 
   const {
@@ -60,7 +43,7 @@ exports.createClass = async function (req, res) {
     descripcion
   ) {
     try {
-      const createdClase = await ClassService.createClase(userBd, clase);
+      const createdClase = await ClassService.createClase(token, clase);
       return res
         .status(201)
         .json({ createdClase, message: "Succesfully created class" });
