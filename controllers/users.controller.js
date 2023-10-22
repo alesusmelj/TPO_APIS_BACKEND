@@ -40,6 +40,8 @@ exports.createUser = async function (req, res) {
   }
 };
 
+//TODO: Validar cuando no existe el mail
+
 exports.updateUser = async function (req, res, next) {
   // Id is necessary for the update
   if (!req.body.mail) {
@@ -65,23 +67,19 @@ exports.updateUser = async function (req, res, next) {
   ) {
     try {
       var updatedUser = await UserService.updateUser(User);
-      return res
-        .status(200)
-        .json({
-          status: 200,
-          data: updatedUser,
-          message: "Succesfully Updated User",
-        });
+      return res.status(200).json({
+        status: 200,
+        data: updatedUser,
+        message: "Succesfully Updated User",
+      });
     } catch (e) {
       console.log(e);
       return res.status(400).json({ status: 400, message: e.message });
     }
   } else {
-    return res
-      .status(400)
-      .json({
-        status: 400,
-        message: "Se deben ingresar los campos obligatorios",
-      });
+    return res.status(400).json({
+      status: 400,
+      message: "Se deben ingresar los campos obligatorios",
+    });
   }
 };
