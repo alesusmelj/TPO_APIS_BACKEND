@@ -1,19 +1,12 @@
-const mongoose = require("mongoose");
-
-mongoose.connect(
-  "mongodb+srv://grupo13:1234@alecluster.byyd4mp.mongodb.net/Aulaez",
-  { useNewUrlParser: true, useUnifiedTopology: true }
-);
-//const mongoosePaginate = require('mongoose-paginate');
-
+const mongoose = require("mongoose")
 // Schema para user
 const userSchema = new mongoose.Schema({
-  nombre: String,
-  apellido: String,
-  telefono: String,
-  mail: String,
+  nombre: { type: String, required: true, min: 2, },
+  apellido: { type: String, required: true, min: 2 },
+  telefono: { type: String, required: true, min: 6 },
+  mail: { type: String, required: true, unique: true, min: 6 },
   experiencia: String,
-  password: String,
+  password: { type: String, required: true, min: 8 },
   ubicacion: String,
   img: String,
   servicios: [
@@ -43,6 +36,4 @@ const userSchema = new mongoose.Schema({
 // Crear modelos basados en los esquemas
 const User = mongoose.model("User", userSchema);
 
-module.exports = {
-  User,
-};
+module.exports = User
