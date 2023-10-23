@@ -145,11 +145,31 @@ exports.updateClass = async function (req, res) {
       const updateClass = await ClassService.updateClass(id, token, clase);
       return res.send(updateClass);
     } catch (error) {
-
+      return res.send(error)
     }
+  }
+}
 
+exports.activateClass = async function (req, res) {
+  const id = req.params["id"];
+  const token = req.headers["x-access-token"];
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ status: 401, message: "Token no proporcionado" });
   }
 
+  try {
+    const changedActivate = await ClassService.activateClass(token, id);
+    if (changedActivate) {
+      return res.status(200).json(changedActivate)
+    } else {
+      return res.status(500).send("Hubo un error")
+    }
+  } catch (error) {
+
+  }
 
 }
 

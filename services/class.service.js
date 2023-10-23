@@ -1,15 +1,11 @@
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
+const UserService = require("./user.service")
 
 exports.createClass = async function (token, clase) {
-  let userBd;
-
+  let userBd
   try {
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-
-    const userId = decoded.id;
-    userBd = await User.findOne({ _id: userId });
-
+    userBd = await UserService.findUserByToken(token)
     if (!userBd) return 0;
   } catch (error) {
     throw Error("Error al buscar usuario");
@@ -20,27 +16,20 @@ exports.createClass = async function (token, clase) {
     var classSaved = await userBd.save();
     return classSaved;
   } catch (error) {
-    console.log(e);
     throw Error("And Error occured while creating the class");
   }
 };
 
-exports.deleteClass = async function (id, token) {
-  let userBd;
-
+exports.deleteClass = async function (idClase, token) {
   try {
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-
-    const userId = decoded.id;
-    userBd = await User.findOne({ _id: userId });
+    let userBd = await UserService.findUserByToken(token)
 
     if (!userBd) return 0;
 
     const cantServicios = userBd.servicios.length;
 
-    userBd.servicios.pull(id);
+    userBd.servicios.pull(idClase);
     var classDeleted = await userBd.save();
-
     if (classDeleted.servicios.length == cantServicios) return 1;
 
     return classDeleted;
@@ -50,15 +39,12 @@ exports.deleteClass = async function (id, token) {
 };
 
 exports.updateClass = async function (idClase, token, newClase) {
-  let userBd;
-
   try {
-    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-
-    const userId = decoded.id;
-    userBd = await User.findOne({ _id: userId });
+    let userBd = await UserService.findUserByToken(token)
     if (!userBd) return 0;
-    let servicio = userBd.servicios.find(servicio => servicio._id.equals(idClase));
+    console.log("hola")
+    let servicio = await findClassById(userBd, idClase)
+    console.log(servicio)
     servicio.categoria = newClase.categoria
     servicio.tipoClase = newClase.tipoClase
     servicio.frecuencia = newClase.frecuencia
@@ -73,4 +59,21 @@ exports.updateClass = async function (idClase, token, newClase) {
   } catch (error) {
     throw Error("Error al buscar usuario / clase");
   }
+}
+
+exports.activateClass = async function (token, idClase) {
+  try {
+    let userBd = await UserService.findUserByToken(token)
+    if (!userBd) return 0;
+    let servicio = await findClassById(userBd, idClase)
+    servicio.activo = !servicio.activo;
+    userBd.save()
+    return { activo: servicio.activo, msg: "Se cambio el estado" }
+  } catch (error) {
+    return false;
+  }
+}
+
+findClassById = async function (user, idClase) {
+  return await user.servicios.find(servicio => servicio._id.equals(idClase));
 }

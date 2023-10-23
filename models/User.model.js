@@ -31,6 +31,22 @@ const userSchema = new mongoose.Schema({
       ],
     },
   ],
+  notificaciones: [
+    {
+      tipo: String,
+      estrellas: Number,
+      estado: String,
+      visto: Boolean,
+      fecha: Date,
+      descripcion: String,
+      informacion: {
+        motivo: String,
+        mail: String,
+        telefono: String,
+        horario: String
+      }
+    }
+  ]
 });
 
 // Crear modelos basados en los esquemas

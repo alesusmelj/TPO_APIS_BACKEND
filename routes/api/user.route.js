@@ -5,5 +5,5 @@ const router = express.Router()
 
 router.post("/login", UserController.loginUser)
 router.post("/register", UserController.createUser)
-router.post("/update", authorization, UserController.updateUser)
+router.put("/update", authorization, UserController.updateUser)
 module.exports = router
