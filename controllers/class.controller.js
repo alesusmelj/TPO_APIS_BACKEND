@@ -102,3 +102,54 @@ exports.deleteClass = async function (req, res) {
       .json({ status: 400, message: "Error deleting class", error: e.message });
   }
 };
+
+exports.updateClass = async function (req, res) {
+  const id = req.params["id"];
+  const token = req.headers["x-access-token"];
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ status: 401, message: "Token no proporcionado" });
+  }
+
+  const {
+    categoria,
+    tipoClase,
+    frecuencia,
+    metodologia,
+    costo,
+    duracion,
+    descripcion,
+  } = req.body;
+
+  const clase = {
+    categoria,
+    tipoClase,
+    frecuencia,
+    metodologia,
+    costo,
+    duracion,
+    descripcion,
+  }
+  if (
+    categoria &&
+    tipoClase &&
+    frecuencia &&
+    metodologia &&
+    costo &&
+    duracion &&
+    descripcion
+  ) {
+    try {
+      const updateClass = await ClassService.updateClass(id, token, clase);
+      return res.send(updateClass);
+    } catch (error) {
+
+    }
+
+  }
+
+
+}
+
