@@ -69,7 +69,11 @@ exports.updateUser = async function (user) {
   }
 }
 
-
+exports.findUserByToken = async function (token) {
+  const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+  const userId = decoded.id;
+  return await User.findOne({ _id: userId });
+}
 
 
 
