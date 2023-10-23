@@ -173,3 +173,24 @@ exports.activateClass = async function (req, res) {
 
 }
 
+exports.getClass = async function (req, res) {
+  try {
+    const id = req.params["id"];
+    const clase = await ClassService.getClassById(id);
+    return res.send(clase)
+  } catch (error) {
+
+  }
+
+}
+
+exports.getClassesByCategory = async function (req, res) {
+  try {
+    const category = req.params["category"];
+    const clases = await ClassService.getClassesByCategory(category);
+    return res.send(clases)
+  } catch (error) {
+
+  }
+
+}

@@ -20,6 +20,44 @@ exports.createClass = async function (token, clase) {
   }
 };
 
+exports.getClassById = async function (id) {
+  try {
+    const user = await User.findOne({ "servicios._id": id })
+    const response = user.toJSON()
+    delete response.servicios
+    response.servicio = await findClassByIdInUser(user, id)
+    return response
+  } catch (error) {
+    console.log(error)
+    throw Error("Error al buscar la clase");
+  }
+}
+
+exports.getClassesByCategory = async function (category) {
+  const clases = []
+  try {
+    const usuarios = await User.find({ 'servicios.categoria': category });
+    for (let i in usuarios) {
+      let profesor = usuarios[i]
+      let servicios = []
+      for (let j in profesor.servicios) {
+        if (profesor.servicios[j].activo == true && profesor.servicios[j].categoria.toLowerCase() == category.toLowerCase()) {
+          servicios.push(profesor.servicios[j])
+        }
+      }
+      if (servicios.length != 0) {
+        profesor.servicios = servicios
+        clases.push(profesor)
+      }
+    }
+
+    return await clases
+  } catch (error) {
+    console.log(error)
+    throw Error("Error al buscar la clase");
+  }
+}
+
 exports.deleteClass = async function (idClase, token) {
   try {
     let userBd = await UserService.findUserByToken(token)
@@ -43,7 +81,7 @@ exports.updateClass = async function (idClase, token, newClase) {
     let userBd = await UserService.findUserByToken(token)
     if (!userBd) return 0;
     console.log("hola")
-    let servicio = await findClassById(userBd, idClase)
+    let servicio = await findClassByIdInUser(userBd, idClase)
     console.log(servicio)
     servicio.categoria = newClase.categoria
     servicio.tipoClase = newClase.tipoClase
@@ -65,7 +103,7 @@ exports.activateClass = async function (token, idClase) {
   try {
     let userBd = await UserService.findUserByToken(token)
     if (!userBd) return 0;
-    let servicio = await findClassById(userBd, idClase)
+    let servicio = await findClassByIdInUser(userBd, idClase)
     servicio.activo = !servicio.activo;
     userBd.save()
     return { activo: servicio.activo, msg: "Se cambio el estado" }
@@ -74,6 +112,6 @@ exports.activateClass = async function (token, idClase) {
   }
 }
 
-findClassById = async function (user, idClase) {
+findClassByIdInUser = async function (user, idClase) {
   return await user.servicios.find(servicio => servicio._id.equals(idClase));
 }
