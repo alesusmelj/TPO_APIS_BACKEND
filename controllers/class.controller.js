@@ -43,10 +43,17 @@ exports.createClass = async function (req, res) {
     descripcion
   ) {
     try {
-      const createdClase = await ClassService.createClase(token, clase);
-      return res
-        .status(201)
-        .json({ createdClase, message: "Succesfully created class" });
+      const createdClass = await ClassService.createClass(token, clase);
+
+      if (createdClass === 0) {
+        return res
+          .status(400)
+          .json({ status: 400, message: "Error al buscar usuario" });
+      } else {
+        return res
+          .status(201)
+          .json({ createdClass, message: "Succesfully created class" });
+      }
     } catch (e) {
       console.log(e);
       return res
@@ -61,4 +68,37 @@ exports.createClass = async function (req, res) {
   }
 };
 
-exports.deleteClass = async function (req, res) {};
+exports.deleteClass = async function (req, res) {
+  const id = req.params["id"];
+  const token = req.headers["x-access-token"];
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ status: 401, message: "Token no proporcionado" });
+  }
+
+  try {
+    const deleteClass = await ClassService.deleteClass(id, token);
+
+    if (deleteClass === 0) {
+      return res
+        .status(400)
+        .json({ status: 400, message: "Error al buscar usuario" });
+    } else if (deleteClass === 1) {
+      return res
+        .status(400)
+        .json({ status: 400, message: "No existe la clase" });
+    } else {
+      return res.status(200).json({
+        status: 200,
+        data: deleteClass,
+        message: "Succesfully deleted class",
+      });
+    }
+  } catch (e) {
+    return res
+      .status(400)
+      .json({ status: 400, message: "Error deleting class", error: e.message });
+  }
+};
