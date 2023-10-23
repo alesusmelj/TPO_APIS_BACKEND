@@ -48,3 +48,29 @@ exports.deleteClass = async function (id, token) {
     throw Error("Error al buscar usuario / clase");
   }
 };
+
+exports.updateClass = async function (idClase, token, newClase) {
+  let userBd;
+
+  try {
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+
+    const userId = decoded.id;
+    userBd = await User.findOne({ _id: userId });
+    if (!userBd) return 0;
+    let servicio = userBd.servicios.find(servicio => servicio._id.equals(idClase));
+    servicio.categoria = newClase.categoria
+    servicio.tipoClase = newClase.tipoClase
+    servicio.frecuencia = newClase.frecuencia
+    servicio.metodologia = newClase.metodologia
+    servicio.costo = newClase.costo
+    servicio.duracion = newClase.duracion
+    servicio.descripcion = newClase.descripcion
+
+    var classUpdated = await userBd.save();
+
+    return classUpdated
+  } catch (error) {
+    throw Error("Error al buscar usuario / clase");
+  }
+}

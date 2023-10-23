@@ -4,5 +4,6 @@ const router = express.Router();
 
 router.post("/create", ClassController.createClass);
 router.delete("/delete/:id", ClassController.deleteClass);
+router.post("/update/:id", ClassController.updateClass);
 
 module.exports = router;
