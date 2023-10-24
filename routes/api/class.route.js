@@ -8,5 +8,6 @@ router.delete("/delete/:id", authorization, ClassController.deleteClass);
 router.put("/update/:id", authorization, ClassController.updateClass);
 router.put("/activate/:id", authorization, ClassController.activateClass);
 router.get("/:id", ClassController.getClass);
+router.post("/contact/:id", ClassController.contactUser);
 
 module.exports = router;

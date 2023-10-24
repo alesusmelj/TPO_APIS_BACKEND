@@ -112,6 +112,15 @@ exports.activateClass = async function (token, idClase) {
   }
 }
 
+exports.contactUser = async function (contactBody, idClase) {
+  const user = await User.findOne({ "servicios._id": idClase })
+  const servicio = await findClassByIdInUser(user, idClase);
+  // servicio.contrataciones.push(contactBody)    se deberia realizar cuando se acepta en la notificacion
+  user.notificaciones.push({ tipo: "Contacto", descripcionServicio: servicio.descripcion, ...contactBody, idServicio: servicio._id, fecha: Date(), estado: "Pendiente", visto: false })
+  user.save()
+  return await user.notificaciones
+}
+
 findClassByIdInUser = async function (user, idClase) {
   return await user.servicios.find(servicio => servicio._id.equals(idClase));
 }

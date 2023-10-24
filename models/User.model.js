@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
       duracion: Number,
       descripcion: String,
       activo: Boolean,
+      contrataciones: [{ mail: String, telefono: String, horario: String, motivo: String, estado: String }],
       comentarios: [
         {
           fecha: Date,
@@ -38,13 +39,11 @@ const userSchema = new mongoose.Schema({
       estado: String,
       visto: Boolean,
       fecha: Date,
-      descripcion: String,
-      informacion: {
-        motivo: String,
-        mail: String,
-        telefono: String,
-        horario: String
-      }
+      descripcionServicio: String,
+      motivo: String,
+      mail: String,
+      telefono: String,
+      horario: String
     }
   ]
 });
