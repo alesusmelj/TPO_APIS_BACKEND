@@ -4,5 +4,6 @@ const NotificationsController = require("../../controllers/notifications.control
 const router = express.Router();
 
 router.get("/", authorization, NotificationsController.getNotifications)
-router.put("/:id", authorization, NotificationsController.changeNotificationSeen)
+router.put("/changeSeen/:id", authorization, NotificationsController.changeNotificationSeen)
+router.put("/changeState/:id", authorization, NotificationsController.changeNotificationState)
 module.exports = router
