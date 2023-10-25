@@ -190,7 +190,18 @@ exports.getClassesByCategory = async function (req, res) {
     const clases = await ClassService.getClassesByCategory(category);
     return res.send(clases)
   } catch (error) {
+  }
+}
 
+exports.contactUser = async function (req, res) {
+  const idClase = req.params["id"];
+  const { mail, telefono, horario, motivo } = req.body
+  if (mail && telefono && horario && motivo) {
+    const contactBody = { mail, telefono, horario, motivo }
+    const servicio = await ClassService.contactUser(contactBody, idClase)
+    return res.send(servicio)
+  } else {
+    return res.send("Se deben ingresar todos los campos")
   }
 
 }
