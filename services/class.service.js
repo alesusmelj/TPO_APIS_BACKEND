@@ -1,6 +1,7 @@
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
-const UserService = require("./user.service")
+const UserService = require("./user.service");
+const { sendEmail } = require("../utils/utils");
 
 exports.createClass = async function (token, clase) {
   let userBd
@@ -117,7 +118,9 @@ exports.contactUser = async function (contactBody, idClase) {
   const servicio = await findClassByIdInUser(user, idClase);
   // servicio.contrataciones.push(contactBody)    se deberia realizar cuando se acepta en la notificacion
   user.notificaciones.push({ tipo: "Contacto", descripcionServicio: servicio.descripcion, ...contactBody, idServicio: servicio._id, fecha: Date(), estado: "Pendiente", visto: false })
+  console.log(contactBody)
   user.save()
+  sendEmail(user.mail, contactBody)
   return await user.notificaciones
 }
 
