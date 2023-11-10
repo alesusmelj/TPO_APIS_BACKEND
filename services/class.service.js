@@ -119,6 +119,7 @@ exports.contactUser = async function (contactBody, idClase) {
   user.notificaciones.push({ tipo: "Contacto", descripcionServicio: servicio.descripcion, ...contactBody, idServicio: servicio._id, fecha: Date(), estado: "Pendiente", visto: false })
   console.log(contactBody)
   user.save()
+
   sendEmail(user.mail, contactBody)
   return await user.notificaciones
 }
