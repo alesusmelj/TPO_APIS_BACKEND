@@ -9,5 +9,6 @@ router.put("/update/:id", authorization, ClassController.updateClass);
 router.put("/activate/:id", authorization, ClassController.activateClass);
 router.get("/:id", ClassController.getClass);
 router.post("/contact/:id", ClassController.contactUser);
+router.post("/comment/:id", ClassController.createComment);
 
 module.exports = router;

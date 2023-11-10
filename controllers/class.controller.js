@@ -131,7 +131,7 @@ exports.updateClass = async function (req, res) {
     costo,
     duracion,
     descripcion,
-  }
+  };
   if (
     categoria &&
     tipoClase &&
@@ -145,10 +145,10 @@ exports.updateClass = async function (req, res) {
       const updateClass = await ClassService.updateClass(id, token, clase);
       return res.send(updateClass);
     } catch (error) {
-      return res.send(error)
+      return res.send(error);
     }
   }
-}
+};
 
 exports.activateClass = async function (req, res) {
   const id = req.params["id"];
@@ -163,45 +163,50 @@ exports.activateClass = async function (req, res) {
   try {
     const changedActivate = await ClassService.activateClass(token, id);
     if (changedActivate) {
-      return res.status(200).json(changedActivate)
+      return res.status(200).json(changedActivate);
     } else {
-      return res.status(500).send("Hubo un error")
+      return res.status(500).send("Hubo un error");
     }
-  } catch (error) {
-
-  }
-
-}
+  } catch (error) {}
+};
 
 exports.getClass = async function (req, res) {
   try {
     const id = req.params["id"];
     const clase = await ClassService.getClassById(id);
-    return res.send(clase)
-  } catch (error) {
-
-  }
-
-}
+    return res.send(clase);
+  } catch (error) {}
+};
 
 exports.getClassesByCategory = async function (req, res) {
   try {
     const category = req.params["category"];
     const clases = await ClassService.getClassesByCategory(category);
-    return res.send(clases)
-  } catch (error) {
-  }
-}
+    return res.send(clases);
+  } catch (error) {}
+};
 
 exports.contactUser = async function (req, res) {
   const idClase = req.params["id"];
-  const { mail, telefono, horario, motivo } = req.body
+  const { mail, telefono, horario, motivo } = req.body;
   if (mail && telefono && horario && motivo) {
-    const contactBody = { mail, telefono, horario, motivo }
-    const servicio = await ClassService.contactUser(contactBody, idClase)
-    return res.send(servicio)
+    const contactBody = { mail, telefono, horario, motivo };
+    const servicio = await ClassService.contactUser(contactBody, idClase);
+    return res.send(servicio);
   } else {
-    return res.send("Se deben ingresar todos los campos")
+    return res.send("Se deben ingresar todos los campos");
   }
+};
 
-}
+exports.createComment = async function (req, res) {
+  const idClase = req.params["id"];
+  const { estrellas, mensaje } = req.body;
+
+  if (estrellas && mensaje) {
+    const commentBody = { estrellas, mensaje };
+    const servicio = await ClassService.createComment(commentBody, idClase);
+    return res.send(servicio);
+  } else {
+    return res.send("Se deben ingresar todos los campos");
+  }
+};
