@@ -44,6 +44,9 @@ exports.createUser = async function (req, res) {
 
 exports.updateUser = async function (req, res, next) {
   // Id is necessary for the update
+  //console.log("----------------------BODY----------------------", req.body);
+  //console.log("----------------------FILE----------------------", req.file);
+
   if (!req.body.mail) {
     return res.status(400).json({ status: 400, message: "mail be present" });
   }
@@ -53,11 +56,12 @@ exports.updateUser = async function (req, res, next) {
     apellido: req.body.apellido ? req.body.apellido : null,
     telefono: req.body.telefono ? req.body.telefono : null,
     ubicacion: req.body.ubicacion ? req.body.ubicacion : null,
-    imagen: req.body.imagen ? req.body.imagen : null,
+    imagen: req.file.buffer ? req.file.buffer : null,
     mail: req.body.mail ? req.body.mail : null,
     password: req.body.password ? req.body.password : null,
     experiencia: req.body.experiencia ? req.body.experiencia : null,
   };
+
   if (
     User.nombre &&
     User.apellido &&
