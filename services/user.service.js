@@ -9,16 +9,15 @@ exports.loginUser = async function (user) {
     console.log("user", user);
 
     const userBd = await User.findOne({ mail: user.mail });
+    if (userBd == undefined) return 0;
     const passwordIsValid = bcrypt.compareSync(user.password, userBd.password);
     if (!passwordIsValid) return 0;
 
-    const token = jwt.sign({ id: userBd._id }, process.env.TOKEN_SECRET, {
-      expiresIn: 86400,
-    });
+    const token = jwt.sign({ id: userBd._id }, process.env.TOKEN_SECRET);
 
     return { token: token, user: userBd };
   } catch (error) {
-    throw Error("Error while Login User");
+    throw Error(e);
   }
 };
 

@@ -14,4 +14,5 @@ router.put(
   authorization,
   UserController.updateUser
 );
+router.get("/isLogged", UserController.isLogged);
 module.exports = router;

@@ -17,6 +17,25 @@ exports.loginUser = async function (req, res) {
   }
 };
 
+exports.isLogged = async function (req, res) {
+  const token = req.headers["x-access-token"];
+  if (!token) {
+    return res
+      .status(401)
+      .json({ status: 401, message: "Token no proporcionado" });
+  }
+
+  try {
+    const user = await UserService.findUserByToken(token);
+    return res.status(200).json(user)
+  } catch (error) {
+    return res
+      .status(404)
+      .json({ status: 404, message: "No existe el usuario" });
+  }
+
+}
+
 exports.createUser = async function (req, res) {
   const { mail, nombre, apellido, telefono, password } = req.body;
 
