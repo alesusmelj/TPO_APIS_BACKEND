@@ -21,7 +21,7 @@ exports.createClass = async function (req, res) {
   } = req.body;
 
   const clase = {
-    categoria,
+    categoria: categoria.toLowerCase(),
     tipoClase,
     frecuencia,
     calificacion: 0,
@@ -167,7 +167,7 @@ exports.activateClass = async function (req, res) {
     } else {
       return res.status(500).send("Hubo un error");
     }
-  } catch (error) {}
+  } catch (error) { }
 };
 
 exports.getClass = async function (req, res) {
@@ -175,15 +175,17 @@ exports.getClass = async function (req, res) {
     const id = req.params["id"];
     const clase = await ClassService.getClassById(id);
     return res.send(clase);
-  } catch (error) {}
+  } catch (error) { }
 };
 
 exports.getClassesByCategory = async function (req, res) {
   try {
     const category = req.params["category"];
     const clases = await ClassService.getClassesByCategory(category);
-    return res.send(clases);
-  } catch (error) {}
+    return res.status(200).send(clases);
+  } catch (error) {
+    return res.status(404).send("No existen clases en la categoria " + category)
+  }
 };
 
 exports.contactUser = async function (req, res) {
