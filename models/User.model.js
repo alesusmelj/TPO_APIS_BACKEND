@@ -53,8 +53,6 @@ const userSchema = new mongoose.Schema({
       mail: String,
       telefono: String,
       horario: String,
-      idContacto: String,
-      idComentario: String,
       idServicio: String,
     },
   ],

@@ -10,9 +10,11 @@ router.post("/login", UserController.loginUser);
 router.post("/register", UserController.createUser);
 router.put(
   "/update",
-  upload.single("imagen"),
+  upload.single("img"),
   authorization,
   UserController.updateUser
 );
 router.get("/isLogged", UserController.isLogged);
+router.get("", UserController.getUser)
+
 module.exports = router;

@@ -51,17 +51,15 @@ exports.updateUser = async function (user) {
     return false;
   }
 
-  if (user.imagen) {
+  if (user.img) {
     try {
-      urlImg = await CloudinaryService.uploadImage(user.imagen);
+      urlImg = await CloudinaryService.uploadImage(user.img);
     } catch (e) {
       console.error(e);
       throw Error("Error occured while uploading to Cloudinary.");
     }
   }
 
-  //Edit the User Object
-  var hashedPassword = bcrypt.hashSync(user.password, 8);
   oldUser.nombre = user.nombre;
   oldUser.mail = user.mail;
   oldUser.apellido = user.apellido;
@@ -69,7 +67,6 @@ exports.updateUser = async function (user) {
   oldUser.ubicacion = user.ubicacion;
   oldUser.img = urlImg;
   oldUser.experiencia = user.experiencia;
-  oldUser.password = hashedPassword;
   console.log(oldUser);
   try {
     var savedUser = await oldUser.save();

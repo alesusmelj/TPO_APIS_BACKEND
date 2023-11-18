@@ -59,34 +59,25 @@ exports.createUser = async function (req, res) {
   }
 };
 
-//TODO: Validar cuando no existe el mail
 
-exports.updateUser = async function (req, res, next) {
-  // Id is necessary for the update
-  //console.log("----------------------BODY----------------------", req.body);
-  //console.log("----------------------FILE----------------------", req.file);
+exports.updateUser = async function (req, res) {
 
-  if (!req.body.mail) {
-    return res.status(400).json({ status: 400, message: "mail be present" });
-  }
-
+  console.log({ "img": req.file })
   var User = {
     nombre: req.body.nombre ? req.body.nombre : null,
     apellido: req.body.apellido ? req.body.apellido : null,
     telefono: req.body.telefono ? req.body.telefono : null,
     ubicacion: req.body.ubicacion ? req.body.ubicacion : null,
-    imagen: req.file.buffer ? req.file.buffer : null,
+    img: req.file ? req.file.buffer : null,
     mail: req.body.mail ? req.body.mail : null,
-    password: req.body.password ? req.body.password : null,
     experiencia: req.body.experiencia ? req.body.experiencia : null,
   };
-
+  console.log(User)
   if (
     User.nombre &&
     User.apellido &&
     User.telefono &&
-    User.mail &&
-    User.password
+    User.mail
   ) {
     try {
       var updatedUser = await UserService.updateUser(User);
@@ -106,3 +97,21 @@ exports.updateUser = async function (req, res, next) {
     });
   }
 };
+
+exports.getUser = async function (req, res, next) {
+  const token = req.headers["x-access-token"];
+  if (!token) {
+    return res
+      .status(401)
+      .json({ status: 401, message: "Token no proporcionado" });
+  }
+
+  try {
+    const user = await UserService.findUserByToken(token);
+    return res.status(200).json(user)
+  } catch (error) {
+    return res
+      .status(404)
+      .json({ status: 404, message: "No existe el usuario" });
+  }
+}
