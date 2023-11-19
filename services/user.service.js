@@ -27,9 +27,7 @@ exports.createUser = async function (user) {
   const newUser = new User(user);
   try {
     const savedUser = await newUser.save();
-    const token = jwt.sign({ id: savedUser._id }, process.env.TOKEN_SECRET, {
-      expiresIn: 86400,
-    });
+    const token = jwt.sign({ id: savedUser._id }, process.env.TOKEN_SECRET);
     return token;
   } catch (error) {
     console.log(error);

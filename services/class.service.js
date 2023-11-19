@@ -29,7 +29,6 @@ exports.getClassById = async function (id) {
     response.servicio = await findClassByIdInUser(user, id);
     return response;
   } catch (error) {
-    console.log(error);
     throw Error("Error al buscar la clase");
   }
 };
@@ -131,23 +130,14 @@ findClassByIdInUser = async function (user, idClase) {
 };
 
 exports.createComment = async function (commentBody, idClase) {
-  const { getClassById } = require("./class.service");
   const user = await User.findOne({ "servicios._id": idClase });
   const servicio = user.servicios.id(idClase);
-  const comment = {
-    fecha: new Date(),
-    estrellas: commentBody.estrellas,
-    mensaje: commentBody.mensaje,
-    visto: false,
-    estado: "Desactivado",
-  };
-
   user.notificaciones.push({
     tipo: "Comentario",
     descripcionServicio: servicio.descripcion,
-    ...comment,
+    mensaje: commentBody.mensaje,
+    estrellas: commentBody.estrellas,
     idServicio: servicio._id,
-    fecha: Date(),
     estado: "Pendiente",
     visto: false,
   });

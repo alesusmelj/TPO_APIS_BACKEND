@@ -10,7 +10,6 @@ exports.loginUser = async function (req, res) {
     else
       return res.status(201).json({ loginUser, message: "Succesfully login" });
   } catch (e) {
-    console.log(e);
     return res
       .status(400)
       .json({ status: 400, message: "Invalid username or password" });

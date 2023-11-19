@@ -175,7 +175,9 @@ exports.getClass = async function (req, res) {
     const id = req.params["id"];
     const clase = await ClassService.getClassById(id);
     return res.send(clase);
-  } catch (error) { }
+  } catch (error) {
+    return res.status(400)
+  }
 };
 
 exports.getClassesByCategory = async function (req, res) {
@@ -207,8 +209,8 @@ exports.createComment = async function (req, res) {
   if (estrellas && mensaje) {
     const commentBody = { estrellas, mensaje };
     const servicio = await ClassService.createComment(commentBody, idClase);
-    return res.send(servicio);
+    return res.status(200).send(servicio);
   } else {
-    return res.send("Se deben ingresar todos los campos");
+    return res.status(400).send("Se deben ingresar todos los campos");
   }
 };

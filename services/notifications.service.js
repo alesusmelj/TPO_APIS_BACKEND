@@ -1,8 +1,9 @@
+const { cantidadComentarios } = require("../utils/utils");
 const { findUserByToken } = require("./user.service")
 
 exports.getNotifications = async function (token) {
     const userBd = await findUserByToken(token)
-    return userBd.notificaciones;
+    return userBd.notificaciones
 }
 
 exports.changeNotificationSeen = async function (idNotification, token) {

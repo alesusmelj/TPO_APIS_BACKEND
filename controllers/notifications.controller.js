@@ -27,10 +27,10 @@ exports.changeNotificationSeen = async (req, res) => {
 
     try {
         const notification = await NotificationsService.changeNotificationSeen(idNotification, token)
-        return res.send(notification)
+        return res.status(200).send(notification)
     } catch (error) {
         console.log(error)
-        return res.send({ msg: "Error al procesar notificaciones", error })
+        return res.status(500).send({ msg: "Error al procesar notificaciones", error })
     }
 }
 

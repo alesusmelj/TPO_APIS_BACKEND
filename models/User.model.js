@@ -54,6 +54,7 @@ const userSchema = new mongoose.Schema({
       telefono: String,
       horario: String,
       idServicio: String,
+      mensaje: String
     },
   ],
 });
