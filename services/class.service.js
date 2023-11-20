@@ -132,7 +132,7 @@ findClassByIdInUser = async function (user, idClase) {
 exports.createComment = async function (commentBody, idClase) {
   const user = await User.findOne({ "servicios._id": idClase });
   const servicio = user.servicios.id(idClase);
-  user.notificaciones.push({
+  const notificacion = {
     tipo: "Comentario",
     descripcionServicio: servicio.descripcion,
     mensaje: commentBody.mensaje,
@@ -140,7 +140,9 @@ exports.createComment = async function (commentBody, idClase) {
     idServicio: servicio._id,
     estado: "Pendiente",
     visto: false,
-  });
+    fecha: Date()
+  }
+  user.notificaciones.push(notificacion);
   user.save();
   return await user.notificaciones;
 };

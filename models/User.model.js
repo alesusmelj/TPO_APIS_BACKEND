@@ -37,6 +37,7 @@ const userSchema = new mongoose.Schema({
           mensaje: String,
           visto: Boolean,
           estado: String,
+          idNotificacion: String
         },
       ],
     },
@@ -54,6 +55,7 @@ const userSchema = new mongoose.Schema({
       telefono: String,
       horario: String,
       idServicio: String,
+
       mensaje: String
     },
   ],

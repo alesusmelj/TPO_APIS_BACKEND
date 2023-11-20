@@ -8,7 +8,7 @@ exports.getNotifications = async function (token) {
 
 exports.changeNotificationSeen = async function (idNotification, token) {
     const userBd = await findUserByToken(token)
-    const notification = userBd.notificaciones.find(noti => noti._id = idNotification);
+    const notification = userBd.notificaciones.find(noti => noti._id == idNotification);
     notification.visto = !notification.visto
     userBd.save()
     return await notification
@@ -16,16 +16,13 @@ exports.changeNotificationSeen = async function (idNotification, token) {
 
 exports.changeNotificationState = async (idNotification, token, state) => {
     const userBd = await findUserByToken(token)
-    const notification = userBd.notificaciones.find(noti => noti._id = idNotification);
-    if (!notification.visto) {
-        notification.visto = true
-    }
+    const notification = userBd.notificaciones.find(noti => noti._id == idNotification);
+    notification.visto = true
     const servicio = userBd.servicios.find(servicio => servicio._id == notification.idServicio)
-    notification.estado = state
 
 
     if (notification.tipo == "Contacto") {
-        if (notification.idContacto) {
+        if (notification.estado != "Pendiente") {
             const contrato = servicio.contrataciones.find(contratacion => contratacion.idNotificacion == notification._id)
             contrato.estado = state
         } else {
@@ -33,15 +30,18 @@ exports.changeNotificationState = async (idNotification, token, state) => {
             servicio.contrataciones.push(contrato)
         }
     } else {
-        if (notification.idServicio) {
+        if (notification.estado != "Pendiente") {
             const comentario = servicio.comentarios.find(comentario => comentario.idNotificacion == notification._id)
             comentario.estado = state
             notification.estado = state
         } else {
-            const comentario = { fecha: notification.fecha, calificacion: notification.calificacion, estado: state, idNotificacion: notification._id }
+            const comentario = { fecha: notification.fecha, estrellas: notification.estrellas, estado: state, idNotificacion: notification._id, mensaje: notification.mensaje }
             servicio.comentarios.push(comentario)
         }
     }
+    notification.estado = state
+
     userBd.save()
+    console.log(userBd)
     return await notification
 }

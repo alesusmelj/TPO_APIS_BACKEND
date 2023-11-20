@@ -24,7 +24,6 @@ exports.changeNotificationSeen = async (req, res) => {
             .status(401)
             .json({ status: 401, message: "Token no proporcionado" });
     }
-
     try {
         const notification = await NotificationsService.changeNotificationSeen(idNotification, token)
         return res.status(200).send(notification)
@@ -38,7 +37,7 @@ exports.changeNotificationState = async (req, res) => {
     const token = req.headers["x-access-token"];
     const idNotification = req.params["id"];
     const { estado } = req.body
-
+    console.log({ estado })
     if (estado != "Cancelado" && estado != "Aceptado") {
         return res.send("No existe el estado " + estado)
     }
