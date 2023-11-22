@@ -83,12 +83,12 @@ exports.deleteClass = async function (req, res) {
 
     if (deleteClass === 0) {
       return res
-        .status(400)
-        .json({ status: 400, message: "Error al buscar usuario" });
+        .status(500)
+        .json({ message: "Error al buscar usuario" });
     } else if (deleteClass === 1) {
       return res
-        .status(400)
-        .json({ status: 400, message: "No existe la clase" });
+        .status(500)
+        .json({ message: "No existe la clase" });
     } else {
       return res.status(200).json({
         status: 200,
@@ -143,9 +143,10 @@ exports.updateClass = async function (req, res) {
   ) {
     try {
       const updateClass = await ClassService.updateClass(id, token, clase);
-      return res.send(updateClass);
+      console.log(updateClass)
+      return res.status(200).send(updateClass);
     } catch (error) {
-      return res.send(error);
+      return res.status(500).send(error);
     }
   }
 };
@@ -196,9 +197,9 @@ exports.contactUser = async function (req, res) {
   if (mail && telefono && horario && motivo) {
     const contactBody = { mail, telefono, horario, motivo };
     const servicio = await ClassService.contactUser(contactBody, idClase);
-    return res.send(servicio);
+    return res.status(200).send(servicio);
   } else {
-    return res.send("Se deben ingresar todos los campos");
+    return res.status(400).send("Se deben ingresar todos los campos");
   }
 };
 

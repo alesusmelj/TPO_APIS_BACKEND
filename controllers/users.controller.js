@@ -61,17 +61,19 @@ exports.createUser = async function (req, res) {
 
 exports.updateUser = async function (req, res) {
 
-  console.log({ "img": req.file })
   var User = {
     nombre: req.body.nombre ? req.body.nombre : null,
     apellido: req.body.apellido ? req.body.apellido : null,
     telefono: req.body.telefono ? req.body.telefono : null,
     ubicacion: req.body.ubicacion ? req.body.ubicacion : null,
-    img: req.file ? req.file.buffer : null,
     mail: req.body.mail ? req.body.mail : null,
     experiencia: req.body.experiencia ? req.body.experiencia : null,
   };
-  console.log(User)
+
+  if (req.file != undefined) {
+    User.img = req.file.buffer
+  }
+
   if (
     User.nombre &&
     User.apellido &&

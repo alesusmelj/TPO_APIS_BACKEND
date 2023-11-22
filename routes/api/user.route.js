@@ -1,8 +1,8 @@
 const express = require("express");
 const UserController = require("../../controllers/users.controller.js");
-const authorization = require("../../auth/auth.js");
 const router = express.Router();
 const multer = require("multer");
+const { authorization } = require("../../auth/middlewares.js");
 
 const upload = multer({ storage: multer.memoryStorage() });
 

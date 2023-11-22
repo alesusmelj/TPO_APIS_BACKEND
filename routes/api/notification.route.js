@@ -1,6 +1,6 @@
 const express = require("express");
-const authorization = require("../../auth/auth.js");
 const NotificationsController = require("../../controllers/notifications.controller.js");
+const { authorization } = require("../../auth/middlewares.js");
 const router = express.Router();
 
 router.get("/", authorization, NotificationsController.getNotifications)

@@ -26,7 +26,7 @@ exports.changeNotificationState = async (idNotification, token, state) => {
             const contrato = servicio.contrataciones.find(contratacion => contratacion.idNotificacion == notification._id)
             contrato.estado = state
         } else {
-            const contrato = { mail: notification.mail, motivo: notification.motivo, telefono: notification.telefono, horario: notification.horario, estado: state, idNotificacion: notification._id }
+            const contrato = { mail: notification.mail, motivo: notification.motivo, descripcionServicio: notification.descripcionServicio, telefono: notification.telefono, idServicio: notification.idServicio, horario: notification.horario, estado: state, idNotificacion: notification._id }
             servicio.contrataciones.push(contrato)
         }
     } else {

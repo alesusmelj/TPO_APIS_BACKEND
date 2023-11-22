@@ -28,6 +28,9 @@ const userSchema = new mongoose.Schema({
           motivo: String,
           estado: String,
           idNotificacion: String,
+          descripcionServicio: String,
+          idServicio: String
+
         },
       ],
       comentarios: [
@@ -37,7 +40,7 @@ const userSchema = new mongoose.Schema({
           mensaje: String,
           visto: Boolean,
           estado: String,
-          idNotificacion: String
+          idNotificacion: String,
         },
       ],
     },

@@ -1,4 +1,6 @@
-const nodemailer = require("nodemailer")
+const nodemailer = require("nodemailer");
+const { findUserByToken } = require("../services/user.service");
+const { getClassById } = require("../services/class.service");
 
 let htmlMail = (telefono, email, horario, motivo) => `<div style="width: 700px">
 
