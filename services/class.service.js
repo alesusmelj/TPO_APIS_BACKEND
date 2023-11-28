@@ -1,7 +1,7 @@
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const UserService = require("./user.service");
-const { sendEmail } = require("../utils/utils");;
+const { sendEmail } = require("../utils/utils");
 
 exports.createClass = async function (token, clase) {
   let userBd;
@@ -25,7 +25,6 @@ exports.getClassById = async function (id) {
   try {
     const user = await User.findOne({ "servicios._id": id });
     const response = user.toJSON();
-    delete response.servicios;
     response.servicio = await findClassByIdInUser(user, id);
     return response;
   } catch (error) {
@@ -44,7 +43,7 @@ exports.getClassesByCategory = async function (category) {
         if (
           profesor.servicios[j].activo == true &&
           profesor.servicios[j].categoria.toLowerCase() ==
-          category.toLowerCase()
+            category.toLowerCase()
         ) {
           servicios.push(profesor.servicios[j]);
         }
@@ -119,11 +118,19 @@ exports.activateClass = async function (token, idClase) {
 exports.contactUser = async function (contactBody, idClase) {
   const user = await User.findOne({ "servicios._id": idClase });
   const servicio = await findClassByIdInUser(user, idClase);
-  user.notificaciones.push({ tipo: "Contacto", descripcionServicio: servicio.descripcion, ...contactBody, idServicio: servicio._id, fecha: Date(), estado: "Pendiente", visto: false })
-  user.save()
-  sendEmail(user.mail, contactBody)
-  return await user.notificaciones
-}
+  user.notificaciones.push({
+    tipo: "Contacto",
+    descripcionServicio: servicio.descripcion,
+    ...contactBody,
+    idServicio: servicio._id,
+    fecha: Date(),
+    estado: "Pendiente",
+    visto: false,
+  });
+  user.save();
+  sendEmail(user.mail, contactBody);
+  return await user.notificaciones;
+};
 
 findClassByIdInUser = async function (user, idClase) {
   return await user.servicios.find((servicio) => servicio._id.equals(idClase));
@@ -140,8 +147,8 @@ exports.createComment = async function (commentBody, idClase) {
     idServicio: servicio._id,
     estado: "Pendiente",
     visto: false,
-    fecha: Date()
-  }
+    fecha: Date(),
+  };
   user.notificaciones.push(notificacion);
   user.save();
   return await user.notificaciones;
