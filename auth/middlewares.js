@@ -5,12 +5,10 @@ const authorization = function (req, res, next) {
 
     var token = req.headers['x-access-token'];
     var msg = { auth: false, message: 'No token provided.' };
-    console.log("token", token)
     if (!token)
         res.status(500).send(msg);
 
     let sec = process.env.TOKEN_SECRET;
-    //console.log("secret",sec)
     jwt.verify(token, sec, function (err, decoded) {
         var msg = { auth: false, message: 'Failed to authenticate token.' };
         if (err)
