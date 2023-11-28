@@ -37,7 +37,6 @@ exports.changeNotificationState = async (req, res) => {
     const token = req.headers["x-access-token"];
     const idNotification = req.params["id"];
     const { estado } = req.body
-    console.log({ estado })
     if (estado != "Cancelado" && estado != "Aceptado") {
         return res.send("No existe el estado " + estado)
     }

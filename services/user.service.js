@@ -6,8 +6,6 @@ require("dotenv").config();
 
 exports.loginUser = async function (user) {
   try {
-    console.log("user", user);
-
     const userBd = await User.findOne({ mail: user.mail });
     if (userBd == undefined) return 0;
     const passwordIsValid = bcrypt.compareSync(user.password, userBd.password);
@@ -23,7 +21,6 @@ exports.loginUser = async function (user) {
 
 exports.createUser = async function (user) {
   user.password = bcrypt.hashSync(user.password, 8);
-  console.log(user);
   const newUser = new User(user);
   try {
     const savedUser = await newUser.save();
@@ -52,10 +49,12 @@ exports.updateUser = async function (user) {
   if (user.img) {
     try {
       urlImg = await CloudinaryService.uploadImage(user.img);
+      oldUser.img = urlImg;
     } catch (e) {
       console.error(e);
       throw Error("Error occured while uploading to Cloudinary.");
     }
+
   }
 
   oldUser.nombre = user.nombre;
@@ -63,9 +62,8 @@ exports.updateUser = async function (user) {
   oldUser.apellido = user.apellido;
   oldUser.telefono = user.telefono;
   oldUser.ubicacion = user.ubicacion;
-  oldUser.img = urlImg;
+
   oldUser.experiencia = user.experiencia;
-  console.log(oldUser);
   try {
     var savedUser = await oldUser.save();
 

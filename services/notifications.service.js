@@ -42,6 +42,5 @@ exports.changeNotificationState = async (idNotification, token, state) => {
     notification.estado = state
 
     userBd.save()
-    console.log(userBd)
     return await notification
 }

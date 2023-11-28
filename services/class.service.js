@@ -43,7 +43,7 @@ exports.getClassesByCategory = async function (category) {
         if (
           profesor.servicios[j].activo == true &&
           profesor.servicios[j].categoria.toLowerCase() ==
-            category.toLowerCase()
+          category.toLowerCase()
         ) {
           servicios.push(profesor.servicios[j]);
         }
@@ -83,9 +83,7 @@ exports.updateClass = async function (idClase, token, newClase) {
   try {
     let userBd = await UserService.findUserByToken(token);
     if (!userBd) return 0;
-    console.log("hola");
     let servicio = await findClassByIdInUser(userBd, idClase);
-    console.log(servicio);
     servicio.categoria = newClase.categoria;
     servicio.tipoClase = newClase.tipoClase;
     servicio.frecuencia = newClase.frecuencia;

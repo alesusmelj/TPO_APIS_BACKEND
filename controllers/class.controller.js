@@ -143,7 +143,6 @@ exports.updateClass = async function (req, res) {
   ) {
     try {
       const updateClass = await ClassService.updateClass(id, token, clase);
-      console.log(updateClass)
       return res.status(200).send(updateClass);
     } catch (error) {
       return res.status(500).send(error);
