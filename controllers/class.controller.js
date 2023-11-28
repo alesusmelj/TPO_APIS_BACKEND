@@ -206,7 +206,6 @@ exports.contactUser = async function (req, res) {
 exports.createComment = async function (req, res) {
   const idClase = req.params["id"];
   const { estrellas, mensaje } = req.body;
-
   if (estrellas && mensaje) {
     const commentBody = { estrellas, mensaje };
     const servicio = await ClassService.createComment(commentBody, idClase);
